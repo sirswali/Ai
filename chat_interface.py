@@ -1,16 +1,24 @@
 import tkinter as tk
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class ChatInterface(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Simple Chat Interface")
+        self.title(os.getenv('CHAT_WINDOW_TITLE', "Simple Chat Interface"))
+        
+        # Get window dimensions from environment variables or use defaults
+        window_width = int(os.getenv('CHAT_WINDOW_WIDTH', 400))
+        window_height = int(os.getenv('CHAT_WINDOW_HEIGHT', 500))
         
         # Create chat display
-        self.chat_display = tk.Text(self, state="disabled", height=20, width=50)
+        self.chat_display = tk.Text(self, state="disabled", height=window_height//20, width=window_width//10)
         self.chat_display.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
         
         # Create input field
-        self.input_field = tk.Entry(self, width=45)
+        self.input_field = tk.Entry(self, width=window_width//12)
         self.input_field.grid(row=1, column=0, padx=5, pady=5)
         self.input_field.bind("<Return>", self.send_message)
         

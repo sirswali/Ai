@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}History{% endblock %}
+
+{% block content %}
+<h1>History Tracking</h1>
+<div class="history-actions">
+    <button id="exportHistoryBtn">Export History</button>
+</div>
+<div class="filter-bar">
+    <input type="text" id="historyFilterInput" placeholder="Filter history...">
+    <button id="filterHistoryBtn">Filter</button>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in history %}
+        <tr>
+            <td>{{ entry['id'] }}</td>
+            <td>{{ entry['user'] }}</td>
+            <td>{{ entry['action'] }}</td>
+            <td>{{ entry['timestamp'] }}</td>
+            <td>{{ entry['details'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    // Add any page-specific JavaScript here
+    document.getElementById('exportHistoryBtn').addEventListener('click', exportHistory);
+    document.getElementById('filterHistoryBtn').addEventListener('click', filterHistory);
+</script>
+{% endblock %}

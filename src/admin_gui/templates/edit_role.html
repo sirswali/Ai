@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Role{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-8">Edit Role</h1>
+
+<form action="{{ url_for('admin_edit_role', role_id=role.id) }}" method="POST" class="space-y-4">
+    <div>
+        <label for="role_name" class="block text-sm font-medium text-gray-700">Role Name</label>
+        <input type="text" name="role_name" id="role_name" value="{{ role.name }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+    </div>
+    <div>
+        <label for="permissions" class="block text-sm font-medium text-gray-700">Permissions</label>
+        <select name="permissions" id="permissions" multiple required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            {% for permission in permissions %}
+            <option value="{{ permission.id }}" {% if permission.id in role_permission_ids %}selected{% endif %}>{{ permission.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Update Role
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add JavaScript for multiple select functionality if needed
+</script>
+{% endblock %}

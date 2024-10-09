@@ -1,0 +1,57 @@
+Ai/
+│
+├── PoC/
+│   ├── AiChat History/
+│   │   └── claude_dev_task_sep-17-2024_3-25-17-pm.md
+│   ├── main.py
+│   ├── mainv1.py
+│   ├── PoC_v1.py
+│   ├── PoC_v2.py
+│   ├── project_structure_cheklst.txt
+│   └── project_structure.txt
+│
+└── src/
+    ├── jira/
+    │   ├── .gitkeep
+    │   └── client.py
+    │
+    ├── knowledge_base/
+    │   ├── .gitkeep
+    │   └── kb.py
+    │
+    ├── llm/
+    │   ├── .gitkeep
+    │   └── wrapper.py
+    │
+    ├── slack/
+    │   ├── .gitkeep
+    │   ├── bot.py
+    │   └── handlers.py
+    │
+    ├── task_management/
+    │   ├── .gitkeep
+    │   └── allocator.py
+    │
+    ├── utils/
+    │   ├── .gitkeep
+    │   ├── access_control.py
+    │   ├── bias_management.py
+    │   ├── chat_memory.py
+    │   ├── data_lineage.py
+    │   └── logger.py
+    │
+    └── main.py
+
+This structure represents the reorganized Ai project:
+
+1. The 'PoC' folder contains proof of concept files and chat history.
+2. The 'src' folder contains the main application code:
+   - 'jira': JIRA integration
+   - 'knowledge_base': Knowledge base management
+   - 'llm': Language Model wrapper
+   - 'slack': Slack bot and handlers
+   - 'task_management': Task allocation logic
+   - 'utils': Various utility modules
+   - 'main.py': The main entry point of the application
+
+Each subdirectory in 'src' contains a .gitkeep file to ensure the directory structure is maintained in version control, even if the directory is empty.

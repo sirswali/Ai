@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Admin GUI</h1>
+<p>Use this interface to manage users, credentials, and view history.</p>
+
+<div class="dashboard">
+    <div class="dashboard-item">
+        <h2>User Management</h2>
+        <p>Manage user accounts and permissions.</p>
+        <a href="{{ url_for('users') }}" class="button">Go to Users</a>
+    </div>
+    <div class="dashboard-item">
+        <h2>Credential Management</h2>
+        <p>Manage user credentials and access tokens.</p>
+        <a href="{{ url_for('credentials') }}" class="button">Go to Credentials</a>
+    </div>
+    <div class="dashboard-item">
+        <h2>History Tracking</h2>
+        <p>View and export system activity history.</p>
+        <a href="{{ url_for('history') }}" class="button">Go to History</a>
+    </div>
+</div>
+
+<div class="quick-stats">
+    <h2>Quick Statistics</h2>
+    <div id="userStatsQuick">
+        <h3>User Stats</h3>
+        <p>Total Users: <span id="totalUsers">Loading...</span></p>
+        <p>Active Users: <span id="activeUsers">Loading...</span></p>
+    </div>
+    <div id="credentialStatsQuick">
+        <h3>Credential Stats</h3>
+        <p>Total Credentials: <span id="totalCredentials">Loading...</span></p>
+        <p>Expiring Soon: <span id="expiringCredentials">Loading...</span></p>
+    </div>
+</div>
+
+<script>
+    // Function to load quick stats
+    function loadQuickStats() {
+        // This would typically be an AJAX call to your backend
+        // For now, we'll just simulate it with setTimeout
+        setTimeout(() => {
+            document.getElementById('totalUsers').textContent = '100';
+            document.getElementById('activeUsers').textContent = '75';
+            document.getElementById('totalCredentials').textContent = '150';
+            document.getElementById('expiringCredentials').textContent = '10';
+        }, 1000);
+    }
+
+    // Load quick stats when the page loads
+    document.addEventListener('DOMContentLoaded', loadQuickStats);
+</script>
+{% endblock %}

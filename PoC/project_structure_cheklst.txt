@@ -1,0 +1,31 @@
+project_root/
+├── main.py
+├── config/
+│   └── settings.py
+├── src/
+│   ├── slack/
+│   │   ├── __init__.py
+│   │   ├── bot.py
+│   │   └── handlers.py
+│   ├── knowledge_base/
+│   │   ├── __init__.py
+│   │   └── kb.py
+│   ├── llm/
+│   │   ├── __init__.py
+│   │   └── wrapper.py
+│   ├── jira/
+│   │   ├── __init__.py
+│   │   └── client.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── logger.py
+│   │   ├── access_control.py
+│   │   ├── chat_memory.py
+│   │   ├── data_lineage.py
+│   │   └── bias_management.py
+│   └── task_management/
+│       ├── __init__.py
+│       └── allocator.py
+├── tests/
+│   └── (test files for each module)
+└── requirements.txt

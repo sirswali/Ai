@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<h1>User Administration</h1>
+<div class="user-actions">
+    <button id="addUserBtn" onclick="addUser()">Add New User</button>
+    <button id="bulkDeleteUsersBtn">Bulk Delete Users</button>
+</div>
+<div class="search-bar">
+    <input type="text" id="userSearchInput" placeholder="Search users...">
+    <button id="searchUsersBtn">Search</button>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user['id'] }}</td>
+            <td>{{ user['username'] }}</td>
+            <td>{{ user['email'] }}</td>
+            <td>
+                <button onclick="editUser({{ user['id'] }})">Edit</button>
+                <button onclick="deleteUser({{ user['id'] }})">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>User Reports</h2>
+<div class="user-reports">
+    <button id="generateUserReportBtn">Generate User Report</button>
+    <button id="exportUserReportBtn">Export User Report</button>
+    <button id="scheduleUserReportBtn">Schedule User Report</button>
+    <button id="customizeUserReportBtn">Customize User Report</button>
+</div>
+
+<div id="userStatsContainer">
+    <h2>User Statistics</h2>
+    <button id="generateUserStatsBtn">Generate User Statistics</button>
+    <!-- User statistics will be displayed here -->
+</div>
+
+<script>
+    // Add any page-specific JavaScript here
+    document.getElementById('generateUserReportBtn').addEventListener('click', () => generateUserReport('activity'));
+    document.getElementById('exportUserReportBtn').addEventListener('click', () => exportUserReport('activity', 'PDF'));
+    document.getElementById('scheduleUserReportBtn').addEventListener('click', () => scheduleUserReport('activity', 'weekly'));
+    document.getElementById('customizeUserReportBtn').addEventListener('click', customizeUserReport);
+</script>
+{% endblock %}
