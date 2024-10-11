@@ -16,6 +16,7 @@ LLM_MODEL_NAME = "EleutherAI/gpt-neo-1.3B"
 # Slack settings
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_SIGNING_SECRET = os.getenv("SLACK_SIGNING_SECRET")
+SLACK_APP_TOKEN = os.getenv("SLACK_APP_TOKEN")
 
 # Jira settings
 JIRA_URL = "https://your-domain.atlassian.net"
@@ -23,11 +24,11 @@ JIRA_USERNAME = "your_jira_username"
 JIRA_API_TOKEN = "your_jira_api_token"
 
 # Knowledge Base settings
-KB_STORAGE_PATH = "path/to/knowledge_base_storage"
+KB_STORAGE_PATH = "knowledge_base"
 
 # Logging settings
 LOG_LEVEL = "INFO"
-LOG_FILE_PATH = "path/to/log/file.log"
+LOG_FILE_PATH = "app.log"
 
 # Access Control settings
 ACCESS_CONTROL_CONFIG = {
