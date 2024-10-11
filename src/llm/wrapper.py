@@ -3,9 +3,14 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 from typing import List, Dict, Any
 import numpy as np
+from utils.logging.logger import CustomLogger
 
 class LLMWrapper:
     def __init__(self):
+
+        self.logger = CustomLogger('LLMWrapper').get_logger()
+        self.logger.info("Initializing LLM wrapper...")
+
         self.model_name = os.environ.get("LLM_MODEL_NAME", "EleutherAI/gpt-neo-1.3B")
         self.model_version = "1.0"
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -14,7 +19,10 @@ class LLMWrapper:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModelForCausalLM.from_pretrained(self.model_name).to(self.device)
 
-    def generate_response(self, prompt: str, context: str = "", max_length: int = 100) -> str:
+    def generate_response(self, prompt: str, context: str = "", max_length: int = 512) -> str:
+        
+        self.logger.info(f"Generating response for prompt: {prompt}")
+        
         full_prompt = f"Context: {context}\n\nQuestion: {prompt}\n\nAnswer:"
         inputs = self.tokenizer.encode(full_prompt, return_tensors="pt").to(self.device)
         
@@ -29,8 +37,10 @@ class LLMWrapper:
             top_p=0.95,
             temperature=0.7
         )
-        
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        # self.logger.info(f"Response generated: {response}")
+        
         return response.split("Answer:")[-1].strip()
 
     def analyze_sentiment(self, text: str) -> float:
