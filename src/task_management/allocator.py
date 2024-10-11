@@ -1,5 +1,5 @@
-from ..jira.client import JiraClient
-from ..llm.wrapper import LLMWrapper
+from jira.client import JiraClient
+from llm.wrapper import LLMWrapper
 from typing import List, Dict, Any
 import json
 import os

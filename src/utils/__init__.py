@@ -1,10 +1,10 @@
 from .access_control import AccessControl
-from .bias_management import BiasManagement
+from .bias_management import BiasManagementMasterAgent
 from .chat_memory import ChatMemory
 from .data_lineage import DataLineage
 from .logger import CustomLogger, AuditLogger
 
-__all__ = ['AccessControl', 'BiasManagement', 'ChatMemory', 'DataLineage', 'CustomLogger', 'AuditLogger']
+__all__ = ['AccessControl', 'BiasManagementMasterAgent', 'ChatMemory', 'DataLineage', 'CustomLogger', 'AuditLogger']
 
 # Initialization code
 import logging
