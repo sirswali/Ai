@@ -3,15 +3,15 @@ from datetime import datetime, timedelta
 
 class SlackHandlers:
     def __init__(self, components):
-        self.kb = components['kb']
+        # self.kb = components['kb']
         self.llm = components['llm']
-        self.jira = components['jira']
+        # self.jira = components['jira']
         self.logger = components['logger']
-        self.access_control = components['access_control']
+        # self.access_control = components['access_control']
         self.chat_memory = components['chat_memory']
         self.data_lineage = components['data_lineage']
-        self.bias_management = components['bias_management']
-        self.task_allocator = components['task_allocator']
+        # self.bias_management = components['bias_management']
+        # self.task_allocator = components['task_allocator']
 
     # ... (previous methods remain unchanged)
 

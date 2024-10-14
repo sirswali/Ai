@@ -1,13 +1,54 @@
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from .handlers import SlackHandlers
+from utils.logging.logger import CustomLogger
 import config
+from llm.wrapper import LLMWrapper
+from datetime import datetime
 
 class SlackBot:
     def __init__(self, components, bot_token, signing_secret):
+
+        logger = CustomLogger('SlackBot').get_logger()
+        logger.info("Initializing Slack bot...")
+      
         self.app = App(token=bot_token, signing_secret=signing_secret)
         self.handlers = SlackHandlers(components)
-        self._register_handlers()
+        # self._register_handlers()
+        
+        # The echo command simply echoes on command
+        @self.app.command("/askbot")
+        def repeat_text(ack, respond, command):
+            # Acknowledge command request
+            ack()
+            prompt = f"{command['text']}"
+            
+            # Timestamp
+            start = datetime.now()
+            # format = '%y/%m/%d %H:%M:%S'
+            
+            if (prompt.lower() == "what is the answer to the fundamental question about life, the universe and everything else?"):
+                respond("The answer to the fundamental question about life, the universe and everything else is 42.")
+                # logger.info(f"/askbot triggered:\nPrompt: {prompt}")
+            else:
+                logger.info(f"/askbot triggered:")
+                llm = components["llm"]
+                
+                # Prompt feedback
+                logger.info(f"Prompt: {prompt}")
+                respond(f"Prompt: {prompt}")
+                
+                # Generate answer
+                answer = llm.generate_response(prompt)
+                
+                # Elapsed time
+                end = datetime.now()
+                timeDiff = end - start
+                
+                # Provide answer
+                respond(f"Answer:{answer}")
+                logger.info(f"Answer: [{timeDiff}]\n{answer}")
+
 
     def _register_handlers(self):
         # Register slash command handlers
