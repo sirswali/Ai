@@ -66,6 +66,8 @@ This project implements an AI-powered task management and knowledge base system 
 
 ### Using Docker (Recommended)
 
+Docker is the preferred method for setting up and running this project. It ensures a consistent environment across different systems and simplifies the setup process.
+
 1. Clone the repository:
    ```
    git clone https://github.com/yourusername/ai-task-management.git
@@ -76,13 +78,91 @@ This project implements an AI-powered task management and knowledge base system 
 
 3. Build the Docker image:
    ```
-   docker build -t ai-task-management .
+   ./docker_build.sh
    ```
+   This script builds the Docker image, installing all necessary dependencies and setting up the environment as specified in the Dockerfile.
+
+   Expected output:
+   ```
+   [+] Building 0.6s (10/10) FINISHED
+    => [internal] load build definition from Dockerfile
+    => => transferring dockerfile: 37B
+    => [internal] load .dockerignore
+    => => transferring context: 2B
+    => [internal] load metadata for docker.io/library/python:3.12.7-bookworm
+    => [1/5] FROM docker.io/library/python:3.12.7-bookworm
+    => [internal] load build context
+    => => transferring context: 32B
+    => [2/5] WORKDIR /usr/src/app
+    => [3/5] COPY requirements.txt ./
+    => [4/5] RUN pip install --no-cache-dir --upgrade pip &&     pip install --no-cache-dir -r requirements.txt
+    => [5/5] COPY . .
+    => exporting to image
+    => => exporting layers
+    => => writing image sha256:...
+    => => naming to docker.io/library/ai-task-management
+   ```
+
+   Troubleshooting:
+   - If you encounter permission issues, try running the script with sudo: `sudo ./docker_build.sh`
+   - If the script is not executable, run: `chmod +x docker_build.sh`
 
 4. Run the container:
    ```
    docker run --env-file .env ai-task-management
    ```
+
+   Expected output:
+   ```
+   Initializing AI-Powered Task Management System...
+   Connected to database successfully
+   Slack bot started
+   JIRA integration initialized
+   Admin GUI running on http://localhost:5000
+   ```
+
+   Troubleshooting:
+   - If you see "Error: No such container", ensure you've built the image successfully in step 3.
+   - If you encounter environment variable issues, check that your .env file is in the correct location and properly formatted.
+
+5. Verify the setup:
+   ```
+   docker ps
+   ```
+   This command should show your running container.
+
+   Expected output:
+   ```
+   CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS          PORTS     NAMES
+   1234567890ab   ai-task-management  "python ./src/main.py"   10 seconds ago   Up 9 seconds              friendly_feynman
+   ```
+
+   Troubleshooting:
+   - If you don't see your container, it may have exited. Use `docker ps -a` to see all containers, including stopped ones.
+   - Check the logs with `docker logs <container_id>` to see any error messages.
+
+6. Access the application:
+   - Admin GUI: Open http://localhost:5000 in your web browser
+   - Slack: The bot should now be active in your Slack workspace
+   - JIRA: The system should be able to fetch and update JIRA tasks
+
+The Docker setup process includes the following key steps:
+- Installing all required dependencies
+- Setting up the Python environment
+- Running tests to ensure the environment is correctly configured
+
+This approach guarantees that all developers and production environments have identical setups, minimizing "it works on my machine" issues.
+
+Additional Docker commands:
+- Stop the container: `docker stop <container_id>`
+- Remove the container: `docker rm <container_id>`
+- Remove the image: `docker rmi ai-task-management`
+- View logs: `docker logs <container_id>`
+
+Troubleshooting tips:
+- If you're having network issues, ensure Docker has the necessary permissions and that no firewall is blocking it.
+- For performance issues, check your Docker resource allocation in Docker Desktop settings.
+- If changes to your code are not reflected, make sure you've rebuilt the image after making changes.
 
 ### Manual Setup
 

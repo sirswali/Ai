@@ -1,0 +1,9 @@
+Starting script execution
+Flask imported successfully
+Bcrypt imported successfully
+CSRFProtect imported successfully
+sqlite3 imported successfully
+load_dotenv imported successfully
+All imports attempted
+Flask app initialized
+Script execution completed
