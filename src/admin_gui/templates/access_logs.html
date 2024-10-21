@@ -4,24 +4,24 @@
 {% block title %}Access Logs{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mb-8">Access Logs</h1>
+<h1 class="page-title">Access Logs</h1>
 
-<div class="mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Filter Logs</h2>
-    <form action="{{ url_for('admin_access_logs') }}" method="GET" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label for="user" class="block text-sm font-medium text-gray-700">User</label>
-                <select name="user" id="user" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+<div class="section">
+    <h2 class="section-title">Filter Logs</h2>
+    <form action="{{ url_for('admin_access_logs') }}" method="GET" class="form-horizontal">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="user">User</label>
+                <select name="user" id="user" class="form-select">
                     <option value="">All Users</option>
                     {% for user in users %}
                     <option value="{{ user.id }}" {% if request.args.get('user') == user.id|string %}selected{% endif %}>{{ user.username }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div>
-                <label for="action" class="block text-sm font-medium text-gray-700">Action</label>
-                <select name="action" id="action" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            <div class="form-group">
+                <label for="action">Action</label>
+                <select name="action" id="action" class="form-select">
                     <option value="">All Actions</option>
                     <option value="login" {% if request.args.get('action') == 'login' %}selected{% endif %}>Login</option>
                     <option value="logout" {% if request.args.get('action') == 'logout' %}selected{% endif %}>Logout</option>
@@ -30,41 +30,39 @@
                     <option value="delete" {% if request.args.get('action') == 'delete' %}selected{% endif %}>Delete</option>
                 </select>
             </div>
-            <div>
-                <label for="date_range" class="block text-sm font-medium text-gray-700">Date Range</label>
-                <input type="text" name="date_range" id="date_range" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Select date range">
+            <div class="form-group">
+                <label for="date_range">Date Range</label>
+                <input type="text" name="date_range" id="date_range" class="form-input" placeholder="Select date range">
             </div>
         </div>
-        <div>
-            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Apply Filters
-            </button>
+        <div class="form-group">
+            <button type="submit" class="button button-primary">Apply Filters</button>
         </div>
     </form>
 </div>
 
-<div>
-    <h2 class="text-2xl font-semibold mb-4">Log Entries</h2>
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+<div class="section">
+    <h2 class="section-title">Log Entries</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Timestamp</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Agent</th>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Details</th>
+                <th>IP Address</th>
+                <th>User Agent</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
             {% for log in logs %}
             <tr>
-                <td class="px-6 py-4 whitespace-nowrap">{{ log.timestamp }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ log.user.username }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ log.action }}</td>
-                <td class="px-6 py-4">{{ log.details }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ log.ip_address }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ log.user_agent }}</td>
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.user.username }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.details }}</td>
+                <td>{{ log.ip_address }}</td>
+                <td>{{ log.user_agent }}</td>
             </tr>
             {% endfor %}
         </tbody>

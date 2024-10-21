@@ -15,32 +15,32 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mb-8">System Health</h1>
+<h1 class="page-title">System Health</h1>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="bg-white p-6 rounded-lg shadow-md metric-card">
-        <h2 class="text-xl font-semibold mb-4">CPU Usage</h2>
-        <div class="text-4xl font-bold text-blue-600" id="cpuUsage">--</div>
-        <p class="text-gray-600 mt-2">Percentage of CPU utilized</p>
+<div class="section dashboard">
+    <div class="dashboard-card metric-card">
+        <h2 class="card-title">CPU Usage</h2>
+        <div class="metric-value text-blue" id="cpuUsage">--</div>
+        <p class="metric-description">Percentage of CPU utilized</p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md metric-card">
-        <h2 class="text-xl font-semibold mb-4">Memory Usage</h2>
-        <div class="text-4xl font-bold text-green-600" id="memoryUsage">--</div>
-        <p class="text-gray-600 mt-2">Percentage of memory utilized</p>
+    <div class="dashboard-card metric-card">
+        <h2 class="card-title">Memory Usage</h2>
+        <div class="metric-value text-green" id="memoryUsage">--</div>
+        <p class="metric-description">Percentage of memory utilized</p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md metric-card">
-        <h2 class="text-xl font-semibold mb-4">Disk Usage</h2>
-        <div class="text-4xl font-bold text-yellow-600" id="diskUsage">--</div>
-        <p class="text-gray-600 mt-2">Percentage of disk space utilized</p>
+    <div class="dashboard-card metric-card">
+        <h2 class="card-title">Disk Usage</h2>
+        <div class="metric-value text-yellow" id="diskUsage">--</div>
+        <p class="metric-description">Percentage of disk space utilized</p>
     </div>
 </div>
 
-<div class="mt-8 bg-white p-6 rounded-lg shadow-md">
-    <h2 class="text-xl font-semibold mb-4">System Logs</h2>
-    <div id="systemLogs" class="bg-gray-100 p-4 rounded-lg h-64 overflow-y-auto">
-        <p class="text-gray-600">Loading system logs...</p>
+<div class="section mt-large">
+    <h2 class="section-title">System Logs</h2>
+    <div id="systemLogs" class="system-logs">
+        <p class="log-message">Loading system logs...</p>
     </div>
 </div>
 {% endblock %}
@@ -63,7 +63,7 @@
             .then(response => response.json())
             .then(data => {
                 const logsContainer = document.getElementById('systemLogs');
-                logsContainer.innerHTML = data.logs.map(log => `<p class="mb-2">${log}</p>`).join('');
+                logsContainer.innerHTML = data.logs.map(log => `<p class="log-message">${log}</p>`).join('');
             })
             .catch(error => console.error('Error fetching system logs:', error));
     }

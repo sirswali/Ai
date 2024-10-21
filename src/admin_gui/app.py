@@ -1,12 +1,9 @@
 import sys
 import os
 import logging
-from flask import Flask, render_template_string, request, jsonify, redirect, url_for, send_from_directory, send_file, flash, session
-from flask_bcrypt import Bcrypt
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from flask_wtf.csrf import CSRFProtect
-from functools import wraps
 import sqlite3
-from io import BytesIO
 from flask_paginate import Pagination, get_page_parameter
 from dotenv import load_dotenv
 
@@ -23,7 +20,6 @@ logger.info("Environment variables loaded")
 
 app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', os.urandom(24))
-bcrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
 
 logger.info("Flask app initialized")
@@ -69,14 +65,6 @@ def init_db():
         with open(create_tables_path, 'r') as f:
             conn.executescript(f.read())
         
-        # Insert default admin user if not exists
-        cursor.execute("SELECT * FROM users WHERE username = 'admin'")
-        if cursor.fetchone() is None:
-            logger.info("Inserting default admin user...")
-            hashed_password = bcrypt.generate_password_hash('admin123').decode('utf-8')
-            cursor.execute("INSERT INTO users (username, email, password, role_id) VALUES (?, ?, ?, ?)",
-                           ('admin', 'admin@example.com', hashed_password, 1))
-        
         conn.commit()
         logger.info("Database initialized successfully")
         return True
@@ -86,71 +74,64 @@ def init_db():
     finally:
         conn.close()
 
-# Combined template
-combined_template = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Admin GUI{% endblock %}</title>
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Dashboard</a></li>
-                <li><a href="{{ url_for('user_management') }}">User Management</a></li>
-                <!-- Add more navigation items here -->
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        {% block content %}
-        <h1>Admin Dashboard</h1>
-
-        <div class="dashboard">
-            <div class="dashboard-item">
-                <h2>User Management</h2>
-                <p>Manage users, roles, and permissions.</p>
-                <a href="{{ url_for('user_management') }}" class="button">Go to User Management</a>
-            </div>
-            <div class="dashboard-item">
-                <h2>System Health</h2>
-                <p>Monitor system performance and status.</p>
-                <a href="#" class="button">View System Health</a>
-            </div>
-            <div class="dashboard-item">
-                <h2>Logs</h2>
-                <p>View and analyze system logs.</p>
-                <a href="#" class="button">View Logs</a>
-            </div>
-        </div>
-        {% endblock %}
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Admin GUI. All rights reserved.</p>
-    </footer>
-</body>
-</html>
-"""
-
 @app.route('/')
 def index():
     logger.info("Received request for index page")
-    return render_template_string(combined_template)
+    return render_template('index.html')
+
+@app.route('/user_dashboard')
+def user_dashboard():
+    logger.info("Received request for user dashboard page")
+    return render_template('user_dashboard.html')
+
+@app.route('/query_solution', methods=['POST'])
+def query_solution():
+    query = request.form.get('query')
+    # Here you would process the query and return results
+    # For now, we'll just return a placeholder response
+    return jsonify({"result": f"Query processed: {query}"})
 
 @app.route('/user_management')
 def user_management():
     logger.info("Received request for user management page")
-    user_management_template = combined_template.replace(
-        '{% block content %}',
-        '{% block content %}<h1>User Management</h1><p>This page is under construction. User management features will be implemented here.</p>'
-    )
-    return render_template_string(user_management_template)
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = 10
+    offset = (page - 1) * per_page
+    
+    conn = get_db_connection()
+    if conn is None:
+        flash("Error connecting to the database", "error")
+        return redirect(url_for('index'))
+    
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT * FROM users LIMIT ? OFFSET ?", (per_page, offset))
+    users = cursor.fetchall()
+    conn.close()
+    
+    pagination = Pagination(page=page, total=total, per_page=per_page, css_framework='bootstrap4')
+    
+    return render_template('user_management.html', users=users, pagination=pagination)
+
+@app.route('/system_health')
+def system_health():
+    logger.info("Received request for system health page")
+    return render_template('admin_system_health.html')
+
+@app.route('/view_logs')
+def view_logs():
+    logger.info("Received request for logs page")
+    return render_template('access_logs.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
     logger.info("Entering main block")

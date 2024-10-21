@@ -1,70 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}User Dashboard{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+<h1 class="page-title">User Dashboard</h1>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">System Health</h2>
-        <a href="/admin/system-health" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Monitor System</a>
+<div class="dashboard-grid">
+    <div class="dashboard-card">
+        <h2>Tasks</h2>
+        <a href="/tasks" class="button button-primary">View Tasks</a>
     </div>
     
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Task Allocation</h2>
-        <a href="/admin/task-allocation" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Manage Tasks</a>
+    <div class="dashboard-card">
+        <h2>Knowledge Base</h2>
+        <a href="/knowledge-base" class="button button-secondary">Access Knowledge Base</a>
     </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Knowledge Base</h2>
-        <a href="/admin/knowledge-base" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Manage KB</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Integrations</h2>
-        <a href="/admin/integrations" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Manage Integrations</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Audit Logs</h2>
-        <a href="/admin/audit-logs" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">View Logs</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Bias Management</h2>
-        <a href="/admin/bias-management" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">Manage Bias</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Multi-Agent Visualization</h2>
-        <a href="/admin/multi-agent" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">View Agents</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Workflow Creator</h2>
-        <a href="/admin/workflow-creator" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Create Workflows</a>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">API Management</h2>
-        <a href="/admin/api-management" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Manage APIs</a>
-    </div>
+</div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">User Access Control</h2>
-        <div class="space-y-2">
-            <a href="/admin/user-management" class="block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">User Management</a>
-            <a href="/admin/role-management" class="block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Role Management</a>
-            <a href="/admin/permission-management" class="block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Permission Management</a>
-            <a href="/admin/access-logs" class="block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Access Logs</a>
-        </div>
-    </div>
+<div class="dashboard-card mt-large">
+    <h2>AI Assistant</h2>
+    <form id="queryForm" class="form-vertical">
+        <input type="text" id="queryInput" placeholder="Ask a question..." class="form-input">
+        <button type="submit" class="button button-primary">Submit Query</button>
+    </form>
+    <div id="queryResponse" class="mt-medium"></div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // Add any admin-specific JavaScript here
+    document.getElementById('queryForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const query = document.getElementById('queryInput').value;
+        const response = await fetch('/query', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query }),
+        });
+        const data = await response.json();
+        document.getElementById('queryResponse').textContent = data.response;
+    });
 </script>
 {% endblock %}

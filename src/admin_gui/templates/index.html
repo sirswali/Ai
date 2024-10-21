@@ -1,10 +1,10 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome to the Admin GUI</h1>
-<p>Use this interface to manage users, credentials, and view history.</p>
+<h1 class="page-title">Welcome to the Admin GUI</h1>
+<p class="page-description">Use this interface to manage users, credentials, and view history.</p>
 
 <div class="dashboard">
     <div class="dashboard-item">
@@ -26,15 +26,15 @@
 
 <div class="quick-stats">
     <h2>Quick Statistics</h2>
-    <div id="userStatsQuick">
+    <div id="userStatsQuick" class="stats-section">
         <h3>User Stats</h3>
-        <p>Total Users: <span id="totalUsers">Loading...</span></p>
-        <p>Active Users: <span id="activeUsers">Loading...</span></p>
+        <p>Total Users: <span id="totalUsers" class="stat-value">Loading...</span></p>
+        <p>Active Users: <span id="activeUsers" class="stat-value">Loading...</span></p>
     </div>
-    <div id="credentialStatsQuick">
+    <div id="credentialStatsQuick" class="stats-section">
         <h3>Credential Stats</h3>
-        <p>Total Credentials: <span id="totalCredentials">Loading...</span></p>
-        <p>Expiring Soon: <span id="expiringCredentials">Loading...</span></p>
+        <p>Total Credentials: <span id="totalCredentials" class="stat-value">Loading...</span></p>
+        <p>Expiring Soon: <span id="expiringCredentials" class="stat-value">Loading...</span></p>
     </div>
 </div>
 
