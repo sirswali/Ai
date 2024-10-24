@@ -1,0 +1,6 @@
+python-dotenv
+slackclient
+jira
+sqlalchemy
+transformers
+torch

@@ -1,6 +1,16 @@
 import os
+import asyncio
 import sqlite3
+import time
+from collections import defaultdict
+from dataclasses import dataclass
+from typing import Dict, Any, Optional, List
 from dotenv import load_dotenv
+from aiohttp import web
+import aiojobs
+from prometheus_client import Counter, Histogram, Gauge
+import aioredis
+
 from slack.bot import SlackBot
 # from knowledge_base.kb import KnowledgeBase  # Commented out
 from llm.wrapper import LLMWrapper
@@ -16,11 +26,179 @@ import config
 from config import USE_TEST_DB, TEST_DB_PATH
 from create_test_db import create_test_database
 
+# Metrics setup
+PROCESSED_MESSAGES = Counter('processed_messages_total', 'Number of processed messages')
+PROCESSING_TIME = Histogram('message_processing_seconds', 'Time spent processing messages')
+QUEUE_SIZE = Gauge('processing_queue_size', 'Current size of the processing queue')
+ERROR_COUNTER = Counter('processing_errors_total', 'Number of processing errors')
+AGENT_PROCESSING_TIME = Histogram('agent_processing_seconds', 'Time spent in multi-agent processing', ['agent_type'])
+
 class ApplicationError(Exception):
     """Custom exception class for application-specific errors."""
     pass
 
-def initialize_components():
+@dataclass
+class Message:
+    """Message container with metadata"""
+    id: str
+    user_id: str
+    content: str
+    channel: str
+    timestamp: float
+    retries: int = 0
+    max_retries: int = 3
+
+class MultiAgentConfig:
+    def __init__(self):
+        self.model_name = config.LLM_MODEL_NAME if hasattr(config, 'LLM_MODEL_NAME') else "EleutherAI/gpt-neo-1.3B"
+        self.max_tokens = 100
+        self.cache_ttl = 3600
+        self.retry_attempts = 3
+        self.retry_delay = 1.0
+        self.timeout = 30.0
+
+class MultiAgentCircuitBreaker:
+    def __init__(self, failure_threshold=5, reset_timeout=60):
+        self.failures = 0
+        self.failure_threshold = failure_threshold
+        self.reset_timeout = reset_timeout
+        self.last_failure_time = 0
+        self._lock = asyncio.Lock()
+    
+    def is_open(self) -> bool:
+        if time.time() - self.last_failure_time > self.reset_timeout:
+            self.reset()
+            return False
+        return self.failures >= self.failure_threshold
+    
+    async def call(self, func, *args, **kwargs):
+        async with self._lock:
+            if self.is_open():
+                raise Exception("Circuit breaker is open")
+            try:
+                result = await func(*args, **kwargs)
+                self.reset()
+                return result
+            except Exception as e:
+                self.record_failure()
+                raise e
+    
+    def reset(self):
+        self.failures = 0
+        self.last_failure_time = 0
+    
+    def record_failure(self):
+        self.failures += 1
+        self.last_failure_time = time.time()
+
+class AsyncProcessingSystem:
+    def __init__(self, components, redis_url: str = "redis://localhost", max_queue_size: int = 1000):
+        self.components = components
+        self.redis = aioredis.from_url(redis_url)
+        self.processing_queue = asyncio.Queue(maxsize=max_queue_size)
+        self.scheduler = aiojobs.Scheduler()
+        self.shutdown_event = asyncio.Event()
+        self.circuit_breaker = MultiAgentCircuitBreaker()
+        self.config = MultiAgentConfig()
+        self.logger = components['logger']
+        self.input_module = InputModule()  # Initialize multi-agent system
+
+    async def initialize(self):
+        """Initialize async components"""
+        await self.scheduler.spawn(self.monitor_system())
+        await self.health_check()
+        self.logger.info("Async processing system initialized")
+
+    async def health_check(self) -> bool:
+        """Perform system health check"""
+        try:
+            await self.redis.ping()
+            test_message = Message(
+                id="health_check",
+                user_id="system",
+                content="health_check",
+                channel="system",
+                timestamp=time.time()
+            )
+            result = await self.process_test_message(test_message)
+            return result is not None
+        except Exception as e:
+            self.logger.error(f"Health check failed: {str(e)}")
+            return False
+
+    async def process_test_message(self, message: Message) -> bool:
+        """Process a test message for health check"""
+        try:
+            async with AGENT_PROCESSING_TIME.labels('health_check').time():
+                result = await asyncio.wait_for(
+                    self.circuit_breaker.call(
+                        self.input_module.orchestrator.process_query,
+                        message.content,
+                        message.user_id
+                    ),
+                    timeout=self.config.timeout
+                )
+            return result is not None
+        except Exception:
+            return False
+
+    async def process_message(self, message: Message):
+        """Process a message through the multi-agent system"""
+        try:
+            async with PROCESSING_TIME.time():
+                result = await self.circuit_breaker.call(
+                    self.input_module.orchestrator.process_query,
+                    message.content,
+                    message.user_id
+                )
+                
+                # Cache result
+                await self.redis.set(
+                    f"result:{message.id}",
+                    result,
+                    ex=self.config.cache_ttl
+                )
+                
+                PROCESSED_MESSAGES.inc()
+                return result
+                
+        except Exception as e:
+            ERROR_COUNTER.inc()
+            self.logger.error(f"Error processing message: {str(e)}")
+            if message.retries < message.max_retries:
+                await self.requeue_with_backoff(message)
+            raise
+
+    async def requeue_with_backoff(self, message: Message):
+        """Requeue a failed message with exponential backoff"""
+        message.retries += 1
+        delay = 2 ** message.retries
+        await asyncio.sleep(delay)
+        await self.processing_queue.put(message)
+
+    async def monitor_system(self):
+        """Monitor system metrics"""
+        while not self.shutdown_event.is_set():
+            try:
+                queue_size = self.processing_queue.qsize()
+                QUEUE_SIZE.set(queue_size)
+                
+                if queue_size > 100:
+                    self.logger.warning(f"High queue size detected: {queue_size}")
+                
+                await asyncio.sleep(10)
+            except Exception as e:
+                self.logger.error(f"Error in system monitor: {str(e)}")
+
+    async def shutdown(self):
+        """Graceful shutdown"""
+        self.shutdown_event.set()
+        await self.scheduler.close()
+        await self.redis.close()
+        await self.redis.wait_closed()
+
+async def initialize_components():
+    """Initialize system components with async support"""
     load_dotenv()
     
     logger = CustomLogger('MainApp').get_logger()
@@ -135,4 +313,5 @@ def main():
     #         logger.error(f"Error during shutdown: {str(e)}")
 
 if __name__ == "__main__":
-    main()
+    app = asyncio.run(main())
+    web.run_app(app, port=8080)

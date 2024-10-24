@@ -1,0 +1,6 @@
+jira
+knowledge_base
+llm
+slack
+task_management
+utils

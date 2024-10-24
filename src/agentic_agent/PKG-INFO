@@ -1,0 +1,193 @@
+Metadata-Version: 2.1
+Name: multi-agent-task-management
+Version: 0.1.0
+Summary: A multi-agent system for task management with Slack and Jira integration
+Home-page: https://github.com/yourusername/multi-agent-task-management
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: python-dotenv
+Requires-Dist: slackclient
+Requires-Dist: jira
+Requires-Dist: sqlalchemy
+Requires-Dist: transformers
+Requires-Dist: torch
+
+# AI-Powered Task Management and Knowledge Base System
+
+This project implements an AI-powered task management and knowledge base system that integrates with Slack and JIRA. It uses Large Language Models (LLMs) to optimize task allocation, provide intelligent responses to queries, and manage a knowledge base.
+
+## Project Structure
+
+```
+Ai/
+├── src/
+│   ├── jira/
+│   │   └── client.py
+│   ├── knowledge_base/
+│   │   └── kb.py
+│   ├── llm/
+│   │   └── wrapper.py
+│   ├── slack/
+│   │   ├── bot.py
+│   │   └── handlers.py
+│   ├── task_management/
+│   │   └── allocator.py
+│   ├── utils/
+│   │   ├── access_control.py
+│   │   ├── bias_management.py
+│   │   ├── chat_memory.py
+│   │   ├── data_lineage.py
+│   │   ├── logger.py
+│   │   └── monitoring_agent.py
+│   ├── config.py
+│   ├── main.py
+│   ├── demo.py
+│   └── create_test_db.py
+├── tests/
+│   ├── test_main.py
+│   ├── test_task_allocator.py
+│   ├── test_knowledge_base.py
+│   ├── test_llm_wrapper.py
+│   └── test_suite.py
+├── requirements.txt
+└── README.md
+```
+
+## Setup
+
+1. Clone the repository
+2. Install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Set up environment variables in a `.env` file (see `config.py` for required variables)
+
+## Setting up the Test Database
+
+To create a test database with dummy data for development and testing purposes:
+
+1. Navigate to the `src` directory:
+   ```
+   cd Ai/src
+   ```
+2. Run the `create_test_db.py` script:
+   ```
+   python create_test_db.py
+   ```
+3. This will create a SQLite database file named `test_database.db` in the same directory.
+
+The test database includes dummy data for users, tasks, comments, and knowledge base entries, allowing you to test various functionalities of the system without connecting to external services.
+
+## Using the Test Database
+
+To use the test database instead of connecting to external services:
+
+1. In your `.env` file, set the `USE_TEST_DB` variable to `True`:
+   ```
+   USE_TEST_DB=True
+   ```
+2. When this variable is set to `True`, the application will use the SQLite test database for all storage operations.
+3. To switch back to using external services, set `USE_TEST_DB=False` or remove the variable from your `.env` file.
+
+## Running the Application
+
+To start the application, run:
+
+```
+python Ai/src/main.py
+```
+
+This will initialize all components and start the Slack bot.
+
+## Running the Demo
+
+To see a demonstration of the system's capabilities, run:
+
+```
+python Ai/src/demo.py
+```
+
+This script showcases the main functionalities of the system, including task allocation, knowledge base operations, LLM capabilities, and Slack integration.
+
+## Running Tests
+
+To run all tests, execute:
+
+```
+python Ai/tests/test_suite.py
+```
+
+This will run all test cases for the main application, task allocator, knowledge base, and LLM wrapper.
+
+## Features
+
+1. Task Management
+   - Allocate tasks based on team members' skills
+   - Generate workload reports
+   - Reallocate tasks for optimal resource utilization
+
+2. Knowledge Base
+   - Add, update, delete, and search knowledge base entries
+   - Semantic search capabilities
+
+3. LLM Integration
+   - Analyze tasks and match with team members' skills
+   - Optimize task allocation
+   - Summarize text and perform semantic search
+
+4. Slack Integration
+   - Interact with the system through Slack commands
+   - Receive notifications and updates in Slack
+
+5. JIRA Integration
+   - Fetch and update task information from JIRA
+
+6. Monitoring and Activity Tracking
+   - Monitor Slack activity for specific users
+   - Track updates and changes in JIRA projects
+   - Use the following Slack commands:
+     - `/monitor_slack`: Monitor Slack activity for a specific user
+     - `/monitor_jira PROJECT-KEY`: Monitor updates for a specific JIRA project
+
+## Slack Commands
+
+Here's a list of available Slack commands:
+
+- `/allocate_task`: Allocate a new task
+- `/workload_report`: Generate a workload report
+- `/reallocate_tasks`: Suggest task reallocation
+- `/kb_add`: Add a new entry to the knowledge base
+- `/kb_search`: Search the knowledge base
+- `/kb_update`: Update an existing knowledge base entry
+- `/kb_delete`: Delete a knowledge base entry
+- `/kb_info`: Get information about the knowledge base
+- `/summarize`: Summarize a given text
+- `/semantic_search`: Perform a semantic search
+- `/analyze_task`: Analyze task requirements
+- `/match_task`: Match a task to team members
+- `/recent_activities`: Get recent activities
+- `/monitor_slack`: Monitor Slack activity for a user
+- `/monitor_jira`: Monitor updates for a JIRA project
+
+## Contributing
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Implement your changes
+4. Write tests for your new feature
+5. Ensure all tests pass
+6. Submit a pull request
+
+## License
+
+[Insert your chosen license here]
