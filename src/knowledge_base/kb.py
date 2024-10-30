@@ -1,6 +1,4 @@
 import os
-import chromadb
-from chromadb.config import Settings
 from cryptography.fernet import Fernet
 import sqlite3
 import json
@@ -11,9 +9,23 @@ class KnowledgeBase:
         self.storage_type = "sqlite" if storage_path.endswith('.db') else os.environ.get("KB_STORAGE_TYPE", "local")
         
         if self.storage_type == "local":
-            self._init_local_storage()
+            try:
+                import chromadb
+                from chromadb.config import Settings
+                self._init_local_storage()
+            except ImportError:
+                print("ChromaDB not installed. Falling back to SQLite storage.")
+                self.storage_type = "sqlite"
+                self._init_sqlite_storage()
         elif self.storage_type == "cloud":
-            self._init_cloud_storage()
+            try:
+                import chromadb
+                from chromadb.config import Settings
+                self._init_cloud_storage()
+            except ImportError:
+                print("ChromaDB not installed. Falling back to SQLite storage.")
+                self.storage_type = "sqlite"
+                self._init_sqlite_storage()
         elif self.storage_type == "sqlite":
             self._init_sqlite_storage()
         else:
@@ -24,9 +36,11 @@ class KnowledgeBase:
         if not key:
             key = Fernet.generate_key()
             print(f"Generated new encryption key: {key.decode()}. Please set this as ENCRYPTION_KEY in your environment variables.")
-        self.cipher_suite = Fernet(key)
+        self.cipher_suite = Fernet(key.encode() if isinstance(key, str) else key)
 
     def _init_local_storage(self):
+        import chromadb
+        from chromadb.config import Settings
         self.client = chromadb.Client(Settings(
             chroma_db_impl="duckdb+parquet",
             persist_directory=self.storage_path
@@ -54,6 +68,9 @@ class KnowledgeBase:
         
         if ids is None:
             ids = [f"doc_{i}" for i in range(len(data))]
+            
+        if metadata is None:
+            metadata = [{}] * len(data)
         
         if self.storage_type in ["local", "cloud"]:
             self.collection.add(
@@ -79,7 +96,12 @@ class KnowledgeBase:
             )
             decrypted_results = [self.cipher_suite.decrypt(item.encode()).decode() for item in results['documents'][0]]
         elif self.storage_type == "sqlite":
-            self.cursor.execute("SELECT content FROM knowledge_base WHERE content LIKE ? LIMIT ?", (f"%{query}%", n_results))
+            # For SQLite, we'll do a simple LIKE query since we don't have vector search
+            # In a real implementation, you might want to use a more sophisticated search method
+            self.cursor.execute(
+                "SELECT content FROM knowledge_base WHERE content LIKE ? LIMIT ?", 
+                (f"%{query}%", n_results)
+            )
             results = self.cursor.fetchall()
             decrypted_results = [self.cipher_suite.decrypt(item[0].encode()).decode() for item in results]
         

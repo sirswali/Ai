@@ -79,6 +79,21 @@ def index():
     logger.info("Received request for index page")
     return render_template('index.html')
 
+@app.route('/users')
+def users():
+    logger.info("Redirecting to user management")
+    return redirect(url_for('user_management'))
+
+@app.route('/credentials')
+def credentials():
+    logger.info("Received request for credentials page")
+    return render_template('credentials.html')
+
+@app.route('/history')
+def history():
+    logger.info("Received request for history page")
+    return render_template('history.html')
+
 @app.route('/user_dashboard')
 def user_dashboard():
     logger.info("Received request for user dashboard page")
