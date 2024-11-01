@@ -30,3 +30,8 @@ Flask-Bcrypt==1.0.1
 Flask-WTF==1.1.1
 email-validator==2.0.0
 flask-paginate==2023.10.8
+
+# Dependencies for enhanced async processing
+aiojobs==1.2.0
+redis==5.0.1  # Using redis-py instead of aioredis
+prometheus-client==0.17.1

@@ -241,43 +241,36 @@ USE CASE DIAGRAMS
     Key Features: Task boards, Gantt charts, sprint backlogs, progress tracking.
     Outcome: Improved sprint execution with clear visibility into task assignments, ongoing progress, and the ability to respond quickly to changes in scope or priorities.
  
-
 2. Task Allocation Based on Skill Set
     Description: Optimize resource utilization by automatically assigning tasks to developers based on their skill sets and availability. Analyze task requirements and match them with the most suitable team members.
     Key Features: Skill matrices, task matching algorithms, workload balancing.
     Outcome: Efficient use of team resources, ensuring that tasks are handled by the bestsuited developers, leading to faster and higherquality output.
  
-
 3. Progress Tracking and Reporting
     Description: Continuously monitor the progress of development tasks and milestones. Generate and share progress reports with stakeholders to keep everyone informed and aligned.
     Key Features: Milestone tracking, real-time dashboards, automated reporting.
     Outcome: Enhanced transparency and communication across teams and stakeholders, allowing for proactive management of timelines and resources.
  
-
 4. Bug Tracking and Resolution
     Description: Implement a system to capture, prioritize, and track bugs throughout the development process. Ensure that critical bugs are addressed promptly by setting up automated alerts and workflows.
     Key Features: Bug tracking boards, priority tags, automated alerts.
     Outcome: Faster bug resolution with clear tracking, leading to improved software quality and reduced production issues.
  
-
 5. Feature Request Management
     Description: Manage feature requests from stakeholders by capturing them, prioritizing based on impact and feasibility, and tracking their development through to release.
     Key Features: Request submission forms, prioritization frameworks, development tracking.
     Outcome: Streamlined feature development process, ensuring that highimpact features are delivered efficiently and meet stakeholder expectations.
  
-
 6. Code Review Workflow Automation
     Description: Automate the code review process by integrating with version control systems. Trigger notifications and task updates when code is ready for review, and track the review process to ensure timely feedback.
     Key Features: Code review checklists, automated notifications, version control integration.
     Outcome: Accelerated code review process, reducing bottlenecks and ensuring that quality checks are consistently applied before code is merged.
  
-
 7. Continuous Integration/Continuous Deployment (CI/CD) Pipeline Management
     Description: Monitor and manage the CI/CD pipeline by tracking deployment status, managing rollbacks, and coordinating team responses to deployment issues.
     Key Features: CI/CD pipeline dashboards, automated deployment tracking, rollback management.
     Outcome: Improved coordination and visibility into the CI/CD process, reducing deployment risks and ensuring smooth, timely releases.
  
-
 8. Development Team Workload Management
     Description: Monitor and manage the workload of development team members to ensure tasks are evenly distributed and prevent burnout. Adjust task assignments in realtime based on changing priorities or resource availability.
     Key Features: Workload dashboards, realtime task reassignment, capacity planning tools.
@@ -293,9 +286,6 @@ USE CASE DIAGRAMS
     Key Features: Release calendars, dependency tracking, readiness checklists.
     Outcome: More predictable and controlled release processes, reducing the risk of delays or issues at launch and ensuring alignment across all stakeholders.
  
-
-
- 
 User Stories – Solution E2E
 1. User Story: Input Module
 As a user, I want to input my question into the system so that I can receive relevant information and assistance.
@@ -357,7 +347,7 @@ User Story 1: Slack Input Module
 
 As a user, I want to input my questions through Slack so that I can easily query the Knowledge Base for relevant information.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The system should allow users to input text-based queries using a Slack command (e.g., `/askkb`).
 2. The bot should confirm the successful receipt of the query within Slack.
 3. The input query should be forwarded to the Knowledge Base Reader and Chat Memory for processing.
@@ -368,7 +358,7 @@ User Story 2: Knowledge Base Query Processing
 
 As a system administrator, I want the Knowledge Base Reader to process Slack queries efficiently so that the system can return relevant answers in a timely manner.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The Knowledge Base Reader must respond to Slack queries within 2 seconds.
 2. The system should retrieve the most contextually relevant data based on the user’s query.
 3. The retrieved data should be processed and sent to the Open Source LLM for a comprehensive response.
@@ -379,7 +369,7 @@ User Story 3: Chat Memory Integration
 
 As a user, I want the system to remember my previous interactions from Slack so that the Knowledge Base provides accurate, context-aware responses to follow-up questions.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The system must securely store previous user interactions within Chat Memory and associate them with the correct user.
 2. When processing a new query, Chat Memory should retrieve relevant historical context and provide it to the Open Source LLM.
 3. The system should allow users to clear or reset their conversation history if desired.
@@ -390,7 +380,7 @@ User Story 4: Response Generation via Open Source LLM
 
 As a developer, I want the Open Source LLM to use both the current input and historical data from Slack to generate accurate and complete responses for users.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The Open Source LLM must generate responses within 5 seconds after receiving the query.
 2. The responses should leverage both current user input and relevant historical data retrieved from Chat Memory.
 3. Responses must be contextually accurate and relevant based on the query and historical context.
@@ -412,7 +402,7 @@ User Story 6: Feedback Mechanism in Slack
 
 As a user, I want to provide feedback on the bot's responses so that the system can improve over time.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The Slack bot should prompt users to rate the response after each query (e.g., with a rating scale or thumbs-up/thumbs-down options).
 2. Feedback should be stored for later analysis and improvement of the LLM.
 3. The system should act on user feedback to improve the accuracy and relevance of future responses.
@@ -422,7 +412,7 @@ User Story 7: Task Allocation via Slack Queries
 
 As a project manager, I want to use Slack to query the Knowledge Base for optimal task allocation based on team members' skills and availability.
 
- Acceptance Criteria:
+Acceptance Criteria:
 1. The Slack bot should allow the project manager to query for task allocation insights (e.g., "Who should handle this bug fix?").
 2. The system should provide suggestions for optimal task assignment based on team members' skills and current workload.
 3. Suggestions must be generated and returned to Slack within 5 seconds of the query.
@@ -453,12 +443,13 @@ Regulatory Compliance
 1. Adherence to Legal Standards:
 The system ensures strict compliance with data protection regulations such as GDPR (General Data Protection Regulation) and CCPA (California Consumer Privacy Act). These regulations dictate how user data must be collected, stored, and processed to protect individual rights and ensure transparency.
 The system's AI algorithms and data processing workflows must adhere to these legal standards, ensuring that user consent is obtained, data is anonymized when necessary, and retention policies are followed.
-   
 2. Monitoring and Updates:
 Regular audits will be conducted to ensure ongoing compliance with any evolving legal standards and regulations. The system should have mechanisms to update and notify users of any changes in data policies or AI regulations that may affect their privacy.
+
 Data Privacy and Security Considerations
 Encryption and Access Controls:
 End-to-End Encryption: All data in transit (such as user queries and Slack interactions) and at rest (stored responses, user history) must be encrypted using industry-standard protocols (e.g., AES-256 for data storage, TLS 1.2/1.3 for data transmission). The Fernet symmetric encryption scheme has been applied conforming to the AES-256 base standard.
+
 Access Control
 Implement role-based access control (RBAC), ensuring that only authorized personnel or users can access sensitive information. For instance, only the data owner (user) or designated roles such as system administrators should be able to access specific historical chat data or personal information.
 
@@ -471,6 +462,7 @@ All user data, including historical chat data, personal interactions, and task-r
    
 DP & S Consideration 3: Incident Response Plan:
 A comprehensive Incident Response Plan (IRP) will be implemented to manage any potential data breaches or security incidents. This plan will outline the steps to contain the breach, notify affected users, and mitigate any further risks.
+
 Risks and Mitigations
 1. Risk 1: Data Breach or Unauthorized Access:
    - Mitigation: Implement multi-factor authentication (MFA) and encryption for all access points. Regularly audit access logs and use intrusion detection systems (IDS) to monitor any unusual activity.
@@ -516,9 +508,11 @@ Implementation Plan
    - Continuously update the AI models and Knowledge Base content based on user feedback and evolving regulatory requirements.
    - Conduct periodic audits and security reviews.
 
-NOTES!
+NOTES!:
+
 VD = Account for Notes being retrieved from JIRA as being utilized for both Semantic Search as well as Knowledgebase for LLM. Vectorization should leverage “\askg” user requests via the JIRA noted related inputs in the LLM for each query should there be a vector correlation. 
 Don’t forget to add these additional commands to the Slack API slash commands.  
+
 # Register handlers for various Slack commands
     slack_bot.app.command("/allocate_task")(slack_bot.handlers.handle_task_allocation)
     slack_bot.app.command("/workload_report")(slack_bot.handlers.handle_workload_report)
@@ -557,6 +551,7 @@ Resources Required
    - Training: Budget for user training sessions and materials.
 Concluding Remarks
 The integration of a robust, AI-powered Knowledge Base with Slack I/O capabilities offers immense value to organizations by improving task management, collaboration, and decision-making. This system not only streamlines internal processes but also ensures compliance with critical data privacy and security regulations. By leveraging user interaction data through Slack and refining responses via open-source AI models, this solution evolves into a dynamic, intelligent assistant that drives efficiency and productivity across teams. Given the outlined resources and implementation steps, this proposal is both feasible and highly impactful for improving organizational knowledge sharing and operational workflows.
+
 Appendices
 Appendix 1
 Risk Factors:
@@ -602,37 +597,37 @@ Where the data will be stored
 Disclosure of Data
 
 Internal Disclosure
-- Internal Use: Data (such as Slack messages, project timelines, or Knowledge Base entries) will be disclosed internally among team members. For instance, a project manager may retrieve details of past Slack discussions to manage tasks or allocate resources.
-- Training Data: If the AI system requires training, internal data (Slack conversations, JIRA tasks) may be used to train the models to understand project management flows, user behavior, and queries.
+   - Internal Use: Data (such as Slack messages, project timelines, or Knowledge Base entries) will be disclosed internally among team members. For instance, a project manager may retrieve details of past Slack discussions to manage tasks or allocate resources.
+   - Training Data: If the AI system requires training, internal data (Slack conversations, JIRA tasks) may be used to train the models to understand project management flows, user behavior, and queries.
 
 External Disclosure
-- External Use: There may be no external disclosure of data unless external data sources or partners are involved in providing insights or if third-party services (e.g., cloud services or AI models) are used.
+   - External Use: There may be no external disclosure of data unless external data sources or partners are involved in providing insights or if third-party services (e.g., cloud services or AI models) are used.
 
 Automated Decision Making
-- Does the system perform automated decision making?: Yes, the system could involve some degree of automated decision-making, particularly in task recommendations, project prioritization, and workflow automation.
-  - Example: The system may automatically suggest task reassignments, predict bottlenecks, or recommend deadlines based on past interactions and current workload data.
+   - Does the system perform automated decision making?: Yes, the system could involve some degree of automated decision-making, particularly in task recommendations, project prioritization, and workflow automation.
+   - Example: The system may automatically suggest task reassignments, predict bottlenecks, or recommend deadlines based on past interactions and current workload data.
 
 Evaluation or Scoring (Profiling or Predicting) of Individuals
 
  Profiling or Predicting Individuals
-- Does the system profile individuals?: The system may indirectly profile users based on their Slack activity, roles, and interaction history.
-  - Example: A user’s past activity could influence task recommendations, resource allocation, or project management decisions, but this is likely focused on improving team productivity rather than individual profiling for scoring or evaluation.
+   - Does the system profile individuals?: The system may indirectly profile users based on their Slack activity, roles, and interaction history.
+   - Example: A user’s past activity could influence task recommendations, resource allocation, or project management decisions, but this is likely focused on improving team productivity rather than individual profiling for scoring or evaluation.
 
 Systematic Monitoring
-- Is there systematic monitoring?: The system may monitor Slack interactions, task completion, and user activities in JIRA to provide real-time updates or predictions, but it is not designed to monitor individuals outside of their participation in work-related activities.
-  - Example: The system may track user activity to provide updates on task status, predict potential delays, or identify resource availability.
+   - Is there systematic monitoring?: The system may monitor Slack interactions, task completion, and user activities in JIRA to provide real-time updates or predictions, but it is not designed to monitor individuals outside of their participation in work-related activities.
+   - Example: The system may track user activity to provide updates on task status, predict potential delays, or identify resource availability.
 
  Large-Scale Processing
-- Is large-scale processing involved?: Yes, the system could handle large-scale data processing, especially in environments with many users and high volumes of Slack messages and JIRA tasks.
-  - Example: If the organization manages multiple projects with hundreds of users, the system will process large volumes of messages, tasks, and project data to deliver context-aware responses and manage ongoing tasks.
+   - Is large-scale processing involved?: Yes, the system could handle large-scale data processing, especially in environments with many users and high volumes of Slack messages and JIRA tasks.
+   - Example: If the organization manages multiple projects with hundreds of users, the system will process large volumes of messages, tasks, and project data to deliver context-aware responses and manage ongoing tasks.
 
 Matching and Combining Datasets
-- Does the system match/merge datasets?: Yes, the system will match and combine data from Slack, JIRA, and the Knowledge Base to provide comprehensive responses.
-  - Example: If a user queries project timelines in Slack, the system may pull task data from JIRA, combine it with past discussions stored in Slack, and generate a context-aware response that integrates data from multiple sources.
+   - Does the system match/merge datasets?: Yes, the system will match and combine data from Slack, JIRA, and the Knowledge Base to provide comprehensive responses.
+   - Example: If a user queries project timelines in Slack, the system may pull task data from JIRA, combine it with past discussions stored in Slack, and generate a context-aware response that integrates data from multiple sources.
 Security
-1. Security: Impact and Risks to OB’s IT Systems
+   1. Security: Impact and Risks to OB’s IT Systems
 
- Impact and Risks
+Impact and Risks
 Public-Facing Systems:
    - Risk: The system’s Slack and JIRA integrations, especially if exposed via public APIs, may increase the attack surface for external threats (e.g., DDoS, phishing, or exploitation of API vulnerabilities).
    - Data Leaks: If internal conversations (from Slack) and task data (from JIRA) are improperly secured, there is a risk of data breaches involving sensitive information or proprietary business data.
@@ -642,7 +637,7 @@ Internal IT Systems:
    - Risk: The system will process internal task management and communication data, which could be vulnerable to insider threats or unauthorized access if proper security measures aren’t in place.
    - Integration Risks: The integration of third-party platforms (Slack, JIRA, etc.) into OB’s IT infrastructure might expose internal systems to third-party vulnerabilities.
 
- 2. Use of Third Parties or Third Party IP
+2. Use of Third Parties or Third Party IP
 Third-Party Involvement
 - Third-Party AI System:
    - Open Source LLMs: The system will likely use open-source LLMs (e.g., GPT-Neo, GPT-J), which rely on third-party codebases and libraries. These LLMs will need to be securely integrated and managed, but no third-party service provider is expected to access OB’s data directly unless external AI models are used.
@@ -653,10 +648,10 @@ Use of IP:
    - The system will involve the integration of third-party IP (e.g., APIs, libraries, and models from Slack, JIRA, and open-source LLMs). However, no proprietary third-party software will access the organization’s internal systems directly.
    - Proprietary IP Creation: The AI system (especially the custom Chat Memory and integration modules) will involve proprietary customizations. The ownership of these custom components will remain with OB unless otherwise specified in licensing agreements.
 
- IP Ownership:
-- Ownership: OB will own the IP rights for the custom code developed for integrating the open-source LLMs with Slack and JIRA. Licensing agreements for open-source tools and third-party APIs (Slack, JIRA) will need to be reviewed to ensure compliance with usage rights.
+IP Ownership:
+   - Ownership: OB will own the IP rights for the custom code developed for integrating the open-source LLMs with Slack and JIRA. Licensing agreements for open-source tools and third-party APIs (Slack, JIRA) will need to be reviewed to ensure compliance with usage rights.
 
- 3. Relevant Third-Party Documents
+3. Relevant Third-Party Documents
 
 - Relevant Documents:
    - Slack and JIRA Terms of Service and API Agreements: These documents outline the terms of usage, including data protection and liability related to integration.
@@ -666,9 +661,9 @@ Use of IP:
  4. Contractual Risks
 
  Existing Contracts Affected
-- Slack and JIRA Contracts: Current contracts for using Slack and JIRA may need to be reviewed to ensure compliance with data storage and processing policies. If the proposal involves heavy data processing or new integrations, it may impact the terms of these contracts.
+   - Slack and JIRA Contracts: Current contracts for using Slack and JIRA may need to be reviewed to ensure compliance with data storage and processing policies. If the proposal involves heavy data processing or new integrations, it may impact the terms of these contracts.
   
-- Third-Party Providers: If any third-party hosting or data processing services are used, contracts with these providers need to be reviewed to avoid violating terms, especially regarding data residency and privacy.
+   - Third-Party Providers: If any third-party hosting or data processing services are used, contracts with these providers need to be reviewed to avoid violating terms, especially regarding data residency and privacy.
 
 5. Mitigations
 
@@ -711,7 +706,7 @@ IP Ownership Clauses:
    - Personnel: Legal Team, Procurement Team.
    - Action: Review contracts with Slack, JIRA, and third-party IP providers. Ensure all licenses for open-source software are properly followed. Update any affected contracts if required.
 
- 7. OBIP Principles Assessment
+7. OBIP Principles Assessment
 
  Reliability and Safety
 - Assessment: The proposal can be considered reliable and safe if appropriate security measures (encryption, access controls, secure API management) are implemented. The use of trusted platforms like Slack and JIRA, alongside proper oversight, ensures that the system operates within acceptable risk boundaries.
@@ -723,11 +718,11 @@ IP Ownership Clauses:
 - Assessment: The system includes sufficient oversight through role-based access, MFA, and regular security audits. This will allow OB to quickly identify any unauthorized access or misuse of data, and mitigate risks before they escalate.
 
 Points of Note
-The proposed solutions outline handling personal, proprietary, and project-related data that may impact OB’s internal and external systems. With the introduction of Slack and ensuring strong encryption, secure API usage, and contract compliance, the identified risks can be mitigated. Additionally, practical steps such as implementing access controls, conducting security audits, and reviewing third-party contracts will safeguard the system’s privacy and reliability.
+   The proposed solutions outline handling personal, proprietary, and project-related data that may impact OB’s internal and external systems. With the introduction of Slack and ensuring strong encryption, secure API usage, and contract compliance, the identified risks can be mitigated. Additionally, practical steps such as implementing access controls, conducting security audits, and reviewing third-party contracts will safeguard the system’s privacy and reliability.
  
 Appendix 2
 SlackBot Setup Guide 
-Here’s a step by step guide for creating the Slack bot functionality that integrates with your Knowledge Base system:
+   Here’s a step by step guide for creating the Slack bot functionality that integrates with your Knowledge Base system:
 
 1. Set Up a Slack App
 
