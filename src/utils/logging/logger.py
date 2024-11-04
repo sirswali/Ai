@@ -34,6 +34,12 @@ class AuditLogger(CustomLogger):
     def log_action(self, user, action, details):
         self.logger.info(f"User: {user} | Action: {action} | Details: {details}")
 
+def setup_logger(name='AsyncProcessingSystem', log_file='app.log', level=logging.INFO):
+    """
+    Setup and return a configured logger instance
+    """
+    return CustomLogger(name, log_file, level).get_logger()
+
 # Usage example:
 # logger = CustomLogger('MyApp').get_logger()
 # logger.info('This is an info message')
