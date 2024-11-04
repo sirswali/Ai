@@ -1,8 +1,13 @@
+"""
+JIRA integration module using local endpoint schemas.
+This module provides a JiraClient that works with predefined JIRA endpoint schemas
+rather than using an external JIRA library.
+"""
+
 from .client import JiraClient
 
 __all__ = ['JiraClient']
 
-# Initialization code (if needed)
-# For example, you might want to set up logging for the Jira module
+# Set up null handler to avoid "No handler found" warnings
 import logging
 logging.getLogger(__name__).addHandler(logging.NullHandler())
