@@ -1,0 +1,246 @@
+// 1. Issue Response - /rest/api/3/issue/{issueIdOrKey}
+{
+    "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+    "id": "10002",
+    "self": "https://your-domain.atlassian.net/rest/api/3/issue/10002",
+    "key": "PROJ-123",
+    "fields": {
+        "summary": "Implementation of OAuth2 authentication",
+        "issuetype": {
+            "self": "https://your-domain.atlassian.net/rest/api/3/issuetype/10000",
+            "id": "10000",
+            "description": "A user story.",
+            "iconUrl": "https://your-domain.atlassian.net/images/icons/issuetypes/story.svg",
+            "name": "Story",
+            "subtask": false
+        },
+        "project": {
+            "self": "https://your-domain.atlassian.net/rest/api/3/project/10000",
+            "id": "10000",
+            "key": "PROJ",
+            "name": "Sample Project"
+        },
+        "description": {
+            "version": 1,
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "text": "Implement OAuth2 authentication system",
+                            "type": "text"
+                        }
+                    ]
+                }
+            ]
+        },
+        "reporter": {
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21f",
+            "accountId": "5b10a2844c20165700ede21f",
+            "emailAddress": "reporter@example.com",
+            "displayName": "Reporter Name",
+            "active": true
+        },
+        "assignee": {
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g",
+            "accountId": "5b10a2844c20165700ede21g",
+            "emailAddress": "assignee@example.com",
+            "displayName": "Assignee Name",
+            "active": true
+        },
+        "created": "2024-01-01T12:00:00.000+0000",
+        "updated": "2024-01-02T12:00:00.000+0000",
+        "status": {
+            "self": "https://your-domain.atlassian.net/rest/api/3/status/10000",
+            "description": "Issue is in progress",
+            "iconUrl": "https://your-domain.atlassian.net/images/icons/statuses/inprogress.png",
+            "name": "In Progress",
+            "id": "10000"
+        }
+    }
+}
+
+// 2. Project Response - /rest/api/3/project/{projectIdOrKey}
+{
+    "self": "https://your-domain.atlassian.net/rest/api/3/project/10000",
+    "id": "10000",
+    "key": "PROJ",
+    "name": "Sample Project",
+    "avatarUrls": {
+        "48x48": "https://your-domain.atlassian.net/secure/projectavatar?size=large&pid=10000",
+        "24x24": "https://your-domain.atlassian.net/secure/projectavatar?size=small&pid=10000",
+        "16x16": "https://your-domain.atlassian.net/secure/projectavatar?size=xsmall&pid=10000",
+        "32x32": "https://your-domain.atlassian.net/secure/projectavatar?size=medium&pid=10000"
+    },
+    "projectType": "software",
+    "simplified": false,
+    "style": "classic",
+    "insight": {
+        "totalIssueCount": 100,
+        "lastIssueUpdateTime": "2024-01-02T12:00:00.000+0000"
+    },
+    "properties": {},
+    "lead": {
+        "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21f",
+        "accountId": "5b10a2844c20165700ede21f",
+        "displayName": "Project Lead",
+        "active": true
+    },
+    "components": [
+        {
+            "self": "https://your-domain.atlassian.net/rest/api/3/component/10000",
+            "id": "10000",
+            "name": "Component 1",
+            "description": "This is component 1",
+            "lead": {
+                "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21f",
+                "accountId": "5b10a2844c20165700ede21f",
+                "displayName": "Component Lead",
+                "active": true
+            }
+        }
+    ],
+    "versions": [
+        {
+            "self": "https://your-domain.atlassian.net/rest/api/3/version/10000",
+            "id": "10000",
+            "name": "1.0.0",
+            "released": true,
+            "releaseDate": "2024-01-01"
+        }
+    ]
+}
+
+// 3. User Response - /rest/api/3/user
+{
+    "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21f",
+    "accountId": "5b10a2844c20165700ede21f",
+    "emailAddress": "user@example.com",
+    "avatarUrls": {
+        "48x48": "https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png",
+        "24x24": "https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png",
+        "16x16": "https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png",
+        "32x32": "https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png"
+    },
+    "displayName": "User Name",
+    "active": true,
+    "timeZone": "Europe/London",
+    "groups": {
+        "size": 3,
+        "items": [
+            {
+                "name": "jira-software-users",
+                "self": "https://your-domain.atlassian.net/rest/api/3/group?groupname=jira-software-users"
+            }
+        ]
+    },
+    "applicationRoles": {
+        "size": 1,
+        "items": [
+            {
+                "key": "jira-software",
+                "name": "Jira Software"
+            }
+        ]
+    }
+}
+
+// 4. Workflow Response - /rest/api/3/workflow
+{
+    "workflows": [
+        {
+            "name": "Software Simplified Workflow",
+            "description": "Generated workflow",
+            "lastModifiedDate": "2024-01-01T12:00:00.000+0000",
+            "lastModifiedUser": "admin",
+            "steps": 4,
+            "scope": {
+                "type": "GLOBAL"
+            },
+            "default": false,
+            "schemes": [
+                {
+                    "id": "10000",
+                    "name": "Software Simplified Workflow Scheme"
+                }
+            ],
+            "statuses": [
+                {
+                    "id": "1",
+                    "name": "Open",
+                    "properties": {
+                        "jira.issue.editable": "true"
+                    }
+                },
+                {
+                    "id": "3",
+                    "name": "In Progress",
+                    "properties": {
+                        "jira.issue.editable": "true"
+                    }
+                },
+                {
+                    "id": "4",
+                    "name": "Done",
+                    "properties": {
+                        "jira.issue.editable": "true"
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "id": "11",
+                    "name": "Start Progress",
+                    "description": "Start working on the issue",
+                    "from": ["1"],
+                    "to": "3",
+                    "type": "global",
+                    "properties": {
+                        "jira.issue.editable": "true"
+                    }
+                },
+                {
+                    "id": "21",
+                    "name": "Done",
+                    "description": "Complete the issue",
+                    "from": ["3"],
+                    "to": "4",
+                    "type": "global",
+                    "properties": {
+                        "jira.issue.editable": "true"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+// 5. Sprint Response - /rest/agile/1.0/sprint/{sprintId}
+{
+    "id": 1,
+    "self": "https://your-domain.atlassian.net/rest/agile/1.0/sprint/1",
+    "state": "active",
+    "name": "Sprint 1",
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-01-15T00:00:00.000Z",
+    "completeDate": null,
+    "originBoardId": 1,
+    "goal": "Complete authentication system implementation",
+    "synced": false,
+    "issues": {
+        "total": 10,
+        "inProgress": 3,
+        "done": 2,
+        "toDo": 5,
+        "punted": 0,
+        "completed": {
+            "count": 2,
+            "estimateSum": 10
+        },
+        "notCompleted": {
+            "count": 8,
+            "estimateSum": 40
+        }
+    }
+}
